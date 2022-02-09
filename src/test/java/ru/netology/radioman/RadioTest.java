@@ -27,6 +27,16 @@ class RadioTest {
 
         assertEquals (expected, actual);
     }
+    @Test
+    public void setCurrentRadioStationIfUnderMin() {
+        Radio radio = new Radio();
+
+        radio.setCurrentRadioStation(-3);
+        int expected = 0;
+        int actual = radio.getCurrentRadioStation();
+
+        assertEquals (expected, actual);
+    }
 
     @Test
     public void nextRadioStation() {
@@ -39,11 +49,31 @@ class RadioTest {
     }
 
     @Test
-    public void prevRadioStation() {
+    public void prevRadioStationIfMinStation() {
         Radio radio = new Radio();
         radio.setCurrentRadioStation(0);
         radio.prevRadioStation();
         int expected = 9;
+        int actual = radio.getCurrentRadioStation();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void prevRadioStation() {
+        Radio radio = new Radio();
+        radio.setCurrentRadioStation(5);
+        radio.prevRadioStation();
+        int expected = 4;
+        int actual = radio.getCurrentRadioStation();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void notChangeOnNextRadioStationIfMaxStation() {
+        Radio radio = new Radio();
+        radio.setCurrentRadioStation(9);
+        radio.nextRadioStation();
+        int expected = 0;
         int actual = radio.getCurrentRadioStation();
         assertEquals(expected, actual);
     }
@@ -70,11 +100,32 @@ class RadioTest {
     }
 
     @Test
+    public void volumeUp() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(7);
+        radio.increaseVolume();
+        int expected = 8;
+        int actual = radio.getCurrentVolume();
+        assertEquals (expected, actual);
+
+    }
+
+    @Test
     public void shouldNotChangeIfVolumeMin() {
         Radio radio = new Radio();
         radio.setCurrentVolume(0);
         radio.decreaseVolume();
         int expected = 0;
+        int actual = radio.getCurrentVolume();
+        assertEquals (expected, actual);
+    }
+
+    @Test
+    public void volumeDown() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(6);
+        radio.decreaseVolume();
+        int expected = 5;
         int actual = radio.getCurrentVolume();
         assertEquals (expected, actual);
     }
