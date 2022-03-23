@@ -5,92 +5,78 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RadioTest {
+    Radio radio = new Radio();
+    Radio radio2 = new Radio(10);
 
 
     @Test
-    void setCurrentRadioStation() {
-        Radio radio = new Radio(10, 10, 50, 100);
-        int expected = 10;
-        int actual = radio.getCurrentRadioStation();
-
-        assertEquals (expected, actual);
-    }
-    @Test
-    void setCurrentRadioStationBackIfUnderMin() {
-        Radio radio = new Radio(10, 10,50, 100);
-        int currentRadioStation = -1;
-        radio.setCurrentRadioStation(currentRadioStation);
-        int expected = 10;
-        int actual = radio.getCurrentRadioStation();
+    void setCurrentStationBackIfUnderMin() {
+        radio2.setCurrentStation(-1);
+        int expected = 0;
+        int actual = radio2.getCurrentStation();
 
         assertEquals (expected, actual);
     }
 
     @Test
-    void setCurrentRadioStationBackIfOverMax() {
-        Radio radio = new Radio(10,10,50,100);
-        int currentRadioStation = 11;
-        radio.setCurrentRadioStation(currentRadioStation);
-        int expected = 10;
-        int actual = radio.getCurrentRadioStation();
+    void setCurrentStation() {
+        radio2.setCurrentStation(1);
+        int expected = 1;
+        int actual = radio2.getCurrentStation();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void setCurrentStationBackIfOverMax() {
+        radio2.setCurrentStation(11);
+        int expected = 0;
+        int actual = radio2.getCurrentStation();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void notChangeOnNextRadioStationIfMaxStation() {
-        Radio radio = new Radio(10,10,50,100);
-        int currentRadioStation = 10;
-        radio.setCurrentRadioStation(currentRadioStation);
-        radio.nextRadioStation();
+    void changeOnNextRadioStationIfMaxStation() {
+        radio2.setCurrentStation(9);
+        radio2.nextStation();
         int expected = 0;
-        int actual = radio.getCurrentRadioStation();
+        int actual = radio2.getCurrentStation();
         assertEquals(expected, actual);
     }
     @Test
     void nextRadioStation() {
-        Radio radio = new Radio(10,10,50,100);
-        int currentRadioStation = 5;
-        radio.setCurrentRadioStation(currentRadioStation);
-        radio.nextRadioStation();
+        radio2.setCurrentStation(5);
+        radio2.nextStation();
         int expected = 6;
-        int actual = radio.getCurrentRadioStation();
+        int actual = radio2.getCurrentStation();
         assertEquals(expected, actual);
     }
 
     @Test
     void prevRadioStation() {
-        Radio radio = new Radio(10,10,50,100);
-        int currentRadioStation = 5;
-        radio.setCurrentRadioStation(currentRadioStation);
-        radio.prevRadioStation();
+        radio2.setCurrentStation(5);
+        radio2.prevStation();
         int expected = 4;
-        int actual = radio.getCurrentRadioStation();
+        int actual = radio2.getCurrentStation();
         assertEquals(expected, actual);
     }
 
 
     @Test
     void prevRadioStationIfMinStation() {
-        Radio radio = new Radio(10,10,50,100);
-        int currentRadioStation = 0;
-        radio.setCurrentRadioStation(currentRadioStation);
-        radio.prevRadioStation();
-        int expected = 10;
-        int actual = radio.getCurrentRadioStation();
+        radio2.setCurrentStation(0);
+        radio2.prevStation();
+        int expected = 9;
+        int actual = radio2.getCurrentStation();
         assertEquals(expected, actual);
     }
 
 
 
-
-
     @Test
     void shouldSetVolumeIfVolumeOverMax() {
-        Radio radio = new Radio(10,10,100,100);
-        int currentVolume = 101;
-        radio.setCurrentVolume(currentVolume);
-        int expected = 100;
+        radio.setCurrentVolume(101);
+        int expected = 0;
         int actual = radio.getCurrentVolume();
         assertEquals (expected, actual);
 
@@ -98,9 +84,7 @@ class RadioTest {
 
     @Test
     void shouldSetIfVolumeUnderMin() {
-        Radio radio = new Radio(10,10,0,100);
-        int currentVolume = -2;
-        radio.setCurrentVolume(currentVolume);
+        radio.setCurrentVolume(-1);
         int expected = 0;
         int actual = radio.getCurrentVolume();
         assertEquals (expected, actual);
@@ -108,22 +92,20 @@ class RadioTest {
 
     @Test
     void volumeDown() {
-        Radio radio = new Radio(10,10,50,100);
-        int currentVolume = 6;
-        radio.setCurrentVolume(currentVolume);
+        Radio radio = new Radio();
+        radio.setCurrentVolume(60);
         radio.decreaseVolume();
-        int expected = 5;
+        int expected = 59;
         int actual = radio.getCurrentVolume();
         assertEquals (expected, actual);
     }
 
     @Test
     void volumeUp() {
-        Radio radio = new Radio(10,10,50,100);
-        int currentVolume = 7;
-        radio.setCurrentVolume(currentVolume);
+        Radio radio = new Radio();
+        radio.setCurrentVolume(60);
         radio.increaseVolume();
-        int expected = 8;
+        int expected = 61;
         int actual = radio.getCurrentVolume();
         assertEquals (expected, actual);
 
@@ -131,9 +113,8 @@ class RadioTest {
 
     @Test
     void shouldNotChangeIfVolumeMin() {
-        Radio radio = new Radio(10,10,50,100);
-        int currentVolume = 0;
-        radio.setCurrentVolume(currentVolume);
+        Radio radio = new Radio();
+        radio.setCurrentVolume(0);
         radio.decreaseVolume();
         int expected = 0;
         int actual = radio.getCurrentVolume();
@@ -144,12 +125,12 @@ class RadioTest {
 
     @Test
     void shouldNotChangeIfVolumeMax() {
-        Radio radio = new Radio(10,10,100,100);
-        int currentVolume = 100;
-        radio.setCurrentVolume(currentVolume);
+        Radio radio = new Radio();
+        radio.setCurrentVolume(100);
         radio.increaseVolume();
         int expected = 100;
         int actual = radio.getCurrentVolume();
         assertEquals (expected, actual);
     }
+
 }
